@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans 
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security.xsd		
+">
+
+	<!-- Configuration de l'authentification -->
+	<!-- Le placeholder {} permet de spécifier le format d'encodage du mot de passe -->
+	<!-- {noop} pour texte brut -->
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="ws_app" password="{noop}secr3t" authorities="BANQUE_REST" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+	<!-- Restrictions d'accès aux services Rest -->
+	<!-- hasRole permet depuis spring security 5 de faire l'évaluation du rôle -->
+	<http>
+		<intercept-url pattern="/**" access="hasRole('BANQUE_REST')" />
+		<http-basic/>
+	</http>
+
+</beans:beans>
